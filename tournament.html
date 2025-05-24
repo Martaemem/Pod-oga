@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kaszëbskô Gra - Turniej</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #0f2167 0%, #1e3a8a 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .tournament-board {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 18px;
+      background: linear-gradient(to bottom, #1e40af, #1e3a8a);
+      padding: 48px;
+      border-radius: 30px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+      border: 4px solid rgba(255, 215, 0, 0.5);
+      margin-bottom: 24px;
+      max-width: 1200px;
+      width: 100%;
+    }
+    .tournament-board .category-tile {
+      background: gold;
+      color: #1e3a8a;
+      font-weight: bold;
+      font-size: 20px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 90px;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.10);
+      text-align: center;
+      user-select: none;
+    }
+    .tournament-board .category-tile:hover {
+      background: #ffd700;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+      transform: scale(1.05);
+    }
+    .top-bar {
+      width: 100%;
+      max-width: 1200px;
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 20px;
+    }
+    .back-btn {
+      background: var(--color-blue, #1e3a8a);
+      color: gold;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .back-btn:hover {
+      background: #2d4ba0;
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+    }
+    @media (max-width: 900px) {
+      .tournament-board {
+        grid-template-columns: repeat(3, 1fr);
+        padding: 18px;
+      }
+      .top-bar {
+        max-width: 100vw;
+      }
+    }
+    @media (max-width: 600px) {
+      .tournament-board {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 5px;
+      }
+      .category-tile {
+        font-size: 14px;
+        height: 48px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <button class="back-btn" onclick="window.location.href='index.html'">PÒDŁOGA</button>
+  </div>
+  <div class="tournament-board">
+    <div class="category-tile" data-category="MÙZYKA">MÙZYKA</div>
+    <div class="category-tile" data-category="ZWIERZĄTA">ZWIERZĄTA</div>
+    <div class="category-tile" data-category="CZAS">CZAS</div>
+    <div class="category-tile" data-category="LEGENDË">LEGENDË</div>
+    <div class="category-tile" data-category="ÒGARDOWIZNA">ÒGARDOWIZNA</div>
+    <div class="category-tile" data-category="RUCHNA">RUCHNA</div>
+    <div class="category-tile" data-category="GBÙRSTWÒ">GBÙRSTWÒ</div>
+    <div class="category-tile" data-category="FARWË">FARWË</div>
+    <div class="category-tile" data-category="WARK">WARK</div>
+    <div class="category-tile" data-category="ZWËCZI">ZWËCZI</div>
+    <div class="category-tile" data-category="KASZËBË">KASZËBË</div>
+    <div class="category-tile" data-category="JESTKÙ">JESTKÙ</div>
+    <div class="category-tile" data-category="MÔL">MÔL</div>
+    <div class="category-tile" data-category="BRZÔD">BRZÔD</div>
+    <div class="category-tile" data-category="CHËCZ">CHËCZ</div>
+    <div class="category-tile" data-category="SZKÒŁA">SZKÒŁA</div>
+    <div class="category-tile" data-category="ÒSOBË">ÒSOBË</div>
+    <div class="category-tile" data-category="NÔTËRA">NÔTËRA</div>
+  </div>
+  <script>
+    document.querySelectorAll('.category-tile').forEach(tile => {
+      tile.addEventListener('click', function () {
+        // Save selected category for the questions page
+        localStorage.setItem('selectedCategory', this.getAttribute('data-category'));
+        window.location.href = 'questions.html';
+      });
+    });
+  </script>
+</body>
+</html>
