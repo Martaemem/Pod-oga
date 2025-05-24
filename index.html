@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="csb">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kaszëbskô Gra Słowów</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap');
+    
+    :root {
+      --color-blue: #1e3a8a;
+      --color-light-blue: #dbeafe;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Lato', sans-serif;
+      background-color: #f0f9ff;
+      color: var(--color-blue);
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 1600px;
+      aspect-ratio: 16/9;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .game-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .category-container {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 15px;
+      flex: 1;
+    }
+    
+    .category-item {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    
+    .name-input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 5px;
+      border: 2px solid #9ca3af;
+      border-radius: 6px;
+      text-align: center;
+      font-size: 14px;
+      transition: border-color 0.2s;
+    }
+    
+    .name-input:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+    }
+    
+    .tile {
+      background: linear-gradient(to bottom, #cde, #9cf);
+      color: #000;
+      padding: 10px;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      text-align: center;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .tile:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+    }
+    
+    .tile.selected {
+      transform: scale(1.05);
+      box-shadow: 0 0 0 3px gold, 0 6px 10px rgba(0,0,0,0.2);
+      z-index: 10;
+    }
+    
+    .tile.selected::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      animation: pulse 1.5s infinite;
+    }
+    
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7); }
+      70% { box-shadow: 0 0 0 10px rgba(255, 215, 0, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
+    }
+    
+    .controls {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      gap: 20px;
+    }
+    
+    .generate-button, .tournament-button {
+      background: var(--color-blue);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 18px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .generate-button:hover, .tournament-button:hover {
+      background: #2d4ba0;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+    }
+    
+    .generate-button:active, .tournament-button:active {
+      transform: translateY(0);
+    }
+    
+    /* Player color styles */
+    .player-color-1 { background: linear-gradient(to bottom, #93c5fd, #3b82f6); color: white; }
+    .player-color-2 { background: linear-gradient(to bottom, #fca5a5, #ef4444); color: white; }
+    .player-color-3 { background: linear-gradient(to bottom, #86efac, #22c55e); color: white; }
+    .player-color-4 { background: linear-gradient(to bottom, #fcd34d, #f59e0b); color: white; }
+    .player-color-5 { background: linear-gradient(to bottom, #c4b5fd, #8b5cf6); color: white; }
+    .player-color-6 { background: linear-gradient(to bottom, #fdba74, #f97316); color: white; }
+    .player-color-7 { background: linear-gradient(to bottom, #a5b4fc, #6366f1); color: white; }
+    .player-color-8 { background: linear-gradient(to bottom, #f9a8d4, #ec4899); color: white; }
+    .player-color-9 { background: linear-gradient(to bottom, #67e8f9, #06b6d4); color: white; }
+    .player-color-10 { background: linear-gradient(to bottom, #d8b4fe, #a855f7); color: white; }
+    
+    @media (max-width: 1200px) {
+      .category-container {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .category-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+      
+      .name-input {
+        padding: 6px;
+        font-size: 12px;
+      }
+      
+      .generate-button, .tournament-button {
+        padding: 10px 20px;
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="game-area">
+      <div class="category-container">
+        <div class="category-item">
+          <input type="text" class="name-input" placeholder="Wpisz imię">
+          <div contenteditable class="tile">MÙZYKA</div>
+        </div>
+        <div class="category-item">
+          <input type="text" class="name-input" placeholder="Wpisz imię">
+          <div contenteditable class="tile">ZWIERZĄTA</div>
+        </div>
+        <div class="category-item">
+          <input type="text" class="name-input" placeholder="Wpisz imię">
+          <div contenteditable class="tile">CZAS</div>
+        </div>
+        <div class="category-item">
+          <input type="text" class="name-input" placeholder="Wpisz imię">
+          <div contenteditable class="tile">LEGENDË</div>
+        </div>
+        <div class="category-item">
+          <input type="text" class="name-input" placeholder="Wpisz imię">
+          <div contenteditable class="tile">ÒGARDOWIZNA</div>
+        </div>
+        <div class="category-item">
+          <input type="text" class="name-input" placeholder="Wpisz imię">
+          <div contenteditable class="tile">RUCHNA</div>
+        </div>
+        <div class="category-item">
+          <input type="text" class="name-input" placeholder="Wpisz imię">
+          <div contenteditable class="tile">GBÙRSTWÒ</div>
+        </div>
+        <div class="category-item">
+          <input type="text" class="name-input" placeholder="Wpisz imię">
+          <div contenteditable class="tile">FARWË</div>
+        </div>
+        <div class="category-item">
+          <input type="text" class="name-input" placeholder="Wpisz imię">
+          <div contenteditable class="tile">WARK</div>
+        </div>
+        <div class="category-item">
+          <input type="text" class="name-input" placeholder="Wpisz imię">
+          <div contenteditable class="tile">ZWËCZI</div>
+        </div>
+        <div class="category-item">
+          <input type="text" class="name-input" placeholder="Wpisz imię">
+          <div contenteditable class="tile">KASZËBË</div>
+        </div>
+        <div class="category-item">
+          <input type="text" class="name-input" placeholder="Wpisz imię">
+          <div contenteditable class="tile">JESTKÙ</div>
+        </div>
+        <div class="category-item">
+          <input type="text" class="name-input" placeholder="Wpisz imię">
+          <div contenteditable class="tile">MÔL</div>
+        </div>
+        <div class="category-item">
+          <input type="text" class="name-input" placeholder="Wpisz imię">
+          <div contenteditable class="tile">BRZÔD</div>
+        </div>
+        <div class="category-item">
+          <input type="text" class="name-input" placeholder="Wpisz imię">
+          <div contenteditable class="tile">CHËCZ</div>
+        </div>
+        <div class="category-item">
+          <input type="text" class="name-input" placeholder="Wpisz imię">
+          <div contenteditable class="tile">SZKÒŁA</div>
+        </div>
+        <div class="category-item">
+          <input type="text" class="name-input" placeholder="Wpisz imię">
+          <div contenteditable class="tile">ÒSOBË</div>
+        </div>
+        <div class="category-item">
+          <input type="text" class="name-input" placeholder="Wpisz imię">
+          <div contenteditable class="tile">NÔTËRA</div>
+        </div>
+      </div>
+      
+      <div class="controls">
+        <button id="generateCategory" class="generate-button">Losuj kategorię</button>
+        <button id="tournamentBtn" class="tournament-button">Turniej</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const generateButton = document.getElementById('generateCategory');
+      const tournamentBtn = document.getElementById('tournamentBtn');
+      const nameInputs = document.querySelectorAll('.name-input');
+      const tiles = document.querySelectorAll('.tile');
+      
+      // Load or initialize the player color mapping
+      let playerColorMap = {};
+      try {
+        const savedColorMap = localStorage.getItem('playerColorMap');
+        if (savedColorMap) {
+          playerColorMap = JSON.parse(savedColorMap);
+        }
+      } catch (e) {
+        console.error("Error loading color map:", e);
+        playerColorMap = {};
+      }
+
+      // Helper: Get all current names in order of their appearance
+      function getCurrentNames() {
+        const names = [];
+        nameInputs.forEach(input => {
+          const name = input.value.trim();
+          if (name && !names.includes(name)) {
+            names.push(name);
+          }
+        });
+        return names;
+      }
+
+      // Assigns a stable color index for each name, preserving old assignments if possible
+      function assignColorsToNames() {
+        const currentNames = getCurrentNames();
+        const allColorIndices = Array.from({length: 10}, (_, i) => i + 1);
+
+        // Build a new color map
+        const newMap = {};
+        // Preserve previous assignments if possible, in the order names now appear
+        let usedIndices = new Set();
+        currentNames.forEach(name => {
+          if (playerColorMap[name] && !usedIndices.has(playerColorMap[name])) {
+            newMap[name] = playerColorMap[name];
+            usedIndices.add(playerColorMap[name]);
+          }
+        });
+
+        // Assign unassigned names the lowest unused color index
+        let colorPool = allColorIndices.filter(idx => !usedIndices.has(idx));
+        currentNames.forEach(name => {
+          if (!newMap[name]) {
+            if (colorPool.length === 0) colorPool = allColorIndices;
+            newMap[name] = colorPool.shift();
+          }
+        });
+
+        // Update the global map and save
+        playerColorMap = newMap;
+        localStorage.setItem('playerColorMap', JSON.stringify(playerColorMap));
+      }
+
+      // Apply colors to tiles based on player names and color assignments
+      function updatePlayerColors() {
+        assignColorsToNames();
+        nameInputs.forEach((input, index) => {
+          const name = input.value.trim();
+          const tile = tiles[index];
+          // Remove all color classes
+          for (let i = 1; i <= 10; i++) {
+            tile.classList.remove(`player-color-${i}`);
+          }
+          // Apply color if name is assigned
+          if (name && playerColorMap[name]) {
+            tile.classList.add(`player-color-${playerColorMap[name]}`);
+          }
+        });
+      }
+
+      // Load saved player names and categories
+      function loadSavedData() {
+        nameInputs.forEach((input, index) => {
+          const savedName = localStorage.getItem(`player-${index}`);
+          if (savedName) {
+            input.value = savedName;
+          }
+        });
+        tiles.forEach((tile, index) => {
+          const savedCategory = localStorage.getItem(`category-${index}`);
+          if (savedCategory) {
+            tile.textContent = savedCategory;
+          }
+        });
+        updatePlayerColors();
+      }
+
+      // Save name input changes & update colors
+      nameInputs.forEach((input, index) => {
+        input.addEventListener('input', function() {
+          localStorage.setItem(`player-${index}`, this.value);
+          updatePlayerColors();
+        });
+      });
+
+      // Save editable category changes
+      tiles.forEach((tile, index) => {
+        tile.addEventListener('blur', function() {
+          localStorage.setItem(`category-${index}`, this.textContent);
+        });
+      });
+
+      // Generate random category
+      generateButton.addEventListener('click', function() {
+        tiles.forEach(tile => tile.classList.remove('selected'));
+        const namedTiles = Array.from(tiles).filter((tile, idx) => nameInputs[idx].value.trim() !== '');
+        const tilePool = namedTiles.length > 0 ? namedTiles : tiles;
+        if (tilePool.length > 0) {
+          const randomIndex = Math.floor(Math.random() * tilePool.length);
+          const selectedTile = tilePool[randomIndex];
+          selectedTile.classList.add('selected');
+          selectedTile.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      });
+
+      // Select tile on click
+      tiles.forEach(tile => {
+        tile.addEventListener('click', function() {
+          if (!this.classList.contains('selected')) {
+            tiles.forEach(t => t.classList.remove('selected'));
+            this.classList.add('selected');
+          } else {
+            this.classList.remove('selected');
+          }
+        });
+      });
+
+      // Tournament button handler
+      tournamentBtn.addEventListener('click', function() {
+        window.location.href = "tournament.html";
+      });
+
+      // Load saved data on page load
+      loadSavedData();
+    });
+  </script>
+</body>
+</html>
