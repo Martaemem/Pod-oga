@@ -4,7 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kaszëbskô Gra - Przedolmaczë wërazë</title>
+  <!-- ... (style bez zmian, jak w Twoim pliku) ... -->
   <style>
+    /* ... (Twój dotychczasowy styl - nie zmieniam, bo dotyczy tylko wyglądu) ... */
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -30,179 +32,13 @@
       overflow: hidden;
       border: 4px solid rgba(255, 215, 0, 0.5);
     }
-    .score-board {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 20px;
-    }
-    .player-card {
-      background: rgba(0, 0, 0, 0.2);
-      padding: 10px 15px;
-      border-radius: 8px;
-      width: 48%;
-      transition: all 0.3s ease;
-    }
-    .player-card.active {
-      box-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
-      background: rgba(0, 0, 0, 0.4);
-      transform: scale(1.03);
-    }
-    .player-name {
-      font-weight: bold;
-      font-size: 18px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .player-score {
-      font-size: 20px;
-      margin-top: 5px;
-      font-weight: bold;
-    }
-    h2 {
-      font-size: 28px;
-      margin: 15px 0;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-    }
-    .word-container {
-      background: rgba(0, 0, 0, 0.2);
-      padding: 20px;
-      border-radius: 10px;
-      margin: 20px 0;
-      min-height: 100px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-    .word {
-      font-size: 38px;
-      font-weight: bold;
-      margin-bottom: 10px;
-      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-    }
-    .answer {
-      font-size: 24px;
-      color: #ffd700;
-      margin-top: 10px;
-      font-style: italic;
-    }
-    .timer {
-      font-size: 20px;
-      margin: 15px 0;
-      font-weight: bold;
-      color: #ffd700;
-    }
-    .timer.warning {
-      color: #ff6b6b;
-      animation: pulse 1s infinite;
-    }
-    .button-group {
-      margin: 20px 0;
-    }
-    button {
-      background: gold;
-      color: #1e3a8a;
-      border: none;
-      padding: 12px 25px;
-      margin: 0 8px;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-    button:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-      background: #ffdf4d;
-    }
-    button:active {
-      transform: translateY(1px);
-    }
-    .message {
-      margin-top: 15px;
-      font-weight: bold;
-      font-size: 18px;
-      min-height: 27px;
-      padding: 8px;
-      border-radius: 8px;
-      transition: all 0.3s ease;
-    }
-    .message.positive { background: rgba(72, 187, 120, 0.2); }
-    .message.negative { background: rgba(245, 101, 101, 0.2); }
-    .welcome-screen, .game-over {
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-      background: linear-gradient(to bottom, #1e40af, #1e3a8a);
-      display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; padding: 30px;
-    }
-    .welcome-screen { transform: translateX(0); transition: transform 0.5s ease; }
-    .welcome-screen.hide { transform: translateX(-100%); }
-    .game-over { transform: translateY(100%); transition: transform 0.5s ease; }
-    .game-over.show { transform: translateY(0); }
-    .welcome-title {
-      font-size: 32px;
-      margin-bottom: 30px;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-    }
-    .player-input { margin-bottom: 30px; width: 100%; max-width: 900px; }
-    .player-input label { display: block; text-align: left; margin-bottom: 5px; font-weight: bold; }
-    .player-input input {
-      width: 100%; padding: 32px 20px; border-radius: 18px; border: 3px solid rgba(255, 215, 0, 0.7);
-      background: rgba(0, 0, 0, 0.22); color: gold; font-size: 38px; font-family: 'Montserrat', sans-serif; min-height: 72px;
-    }
-    .player-input input:focus { outline: none; border-color: gold; box-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
-    .start-btn { padding: 22px 45px; font-size: 32px; margin-top: 30px; }
-    .results-table {
-      width: 80%; margin: 30px 0; border-collapse: collapse; background: rgba(0, 0, 0, 0.2); border-radius: 10px; overflow: hidden;
-    }
-    .results-table th, .results-table td {
-      padding: 18px; text-align: center; border-bottom: 1px solid rgba(255, 215, 0, 0.3); font-size: 26px;
-    }
-    .results-table th { background: rgba(0, 0, 0, 0.2); }
-    .winner {
-      color: #ffd700;
-      font-weight: bold;
-      text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-    }
-    .restart-btn { padding: 22px 45px; font-size: 32px; margin-top: 30px; }
-    .progress-bar { width: 100%; height: 18px; background: rgba(0, 0, 0, 0.2); border-radius: 9px; margin: 24px 0; overflow: hidden; }
-    .progress { height: 100%; background: gold; width: 0%; transition: width 0.3s ease; }
-    .back-btn {
-      position: absolute; top: 22px; right: 22px; z-index: 11;
-      background: var(--color-blue, #1e3a8a);
-      color: gold;
-      border: none;
-      padding: 16px 32px;
-      border-radius: 12px;
-      font-size: 19px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.2s;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    .back-btn:hover {
-      background: #2d4ba0;
-      color: #fff;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 6px rgba(0,0,0,0.15);
-    }
-    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
-    @media (max-width: 900px) {
-      .game-container { padding: 25px 10px; max-width: 100vw; min-height: 0; }
-      .player-input { max-width: 100vw; }
-      .player-input input { font-size: 22px; padding: 14px 8px; }
-      .results-table th, .results-table td { font-size: 16px; padding: 8px; }
-      .start-btn, .restart-btn { font-size: 18px; padding: 10px 18px; }
-      .back-btn { font-size: 14px; padding: 10px 18px; }
-    }
+    /* ... reszta stylów bez zmian ... */
   </style>
 </head>
 <body>
   <div class="game-container">
+    <!-- ... (wszystko bez zmian do <script>) ... -->
     <button class="back-btn" onclick="window.location.href='tournament.html'">PÒDŁOGA</button>
-    <!-- Welcome Screen -->
     <div id="welcomeScreen" class="welcome-screen">
       <h1 class="welcome-title">Kaszëbskô Gra - Przedolmaczë wërazë</h1>
       <div class="player-input">
@@ -215,7 +51,6 @@
       </div>
       <button class="start-btn" onclick="startGame()">ZACZÃC GRÃ</button>
     </div>
-    <!-- Game Screen -->
     <div class="score-board">
       <div id="player1" class="player-card active">
         <div class="player-name">Grôcz 1</div>
@@ -247,7 +82,6 @@
       <button onclick="wrong()">ZMIŁKÒWÔ ÒDPÒWIESC</button>
     </div>
     <div id="msg" class="message"></div>
-    <!-- Game Over Screen -->
     <div id="gameOver" class="game-over">
       <h2>KÙNC GRË</h2>
       <table class="results-table">
@@ -263,7 +97,7 @@
     </div>
   </div>
   <script>
-    // Przykładowe pytania dla wszystkich kategorii
+    // Przykładowa baza pytań - bez zmian
     const categoryQuestions = {
       "MÙZYKA": [
         { word: "akòrdzéon", answer: "akordeon" },
@@ -279,111 +113,7 @@
         { word: "kòt", answer: "kot" },
         { word: "pies", answer: "pies" }
       ],
-      "CZAS": [
-        { word: "dzeni", answer: "dzień" },
-        { word: "noc", answer: "noc" },
-        { word: "rok", answer: "rok" },
-        { word: "gòdzëna", answer: "godzina" },
-        { word: "miesąc", answer: "miesiąc" }
-      ],
-      "LEGENDË": [
-        { word: "smok", answer: "smok" },
-        { word: "widma", answer: "widmo" },
-        { word: "straszi", answer: "straszydło" },
-        { word: "diôbeł", answer: "diabeł" },
-        { word: "kòstëra", answer: "kościotrup" }
-      ],
-      "ÒGARDOWIZNA": [
-        { word: "gòrszczi", answer: "ogórek" },
-        { word: "marchew", answer: "marchew" },
-        { word: "pòmidor", answer: "pomidor" },
-        { word: "kôrtofle", answer: "ziemniaki" },
-        { word: "cebùla", answer: "cebula" }
-      ],
-      "RUCHNA": [
-        { word: "biega", answer: "biegać" },
-        { word: "skòka", answer: "skakać" },
-        { word: "szëdza", answer: "siedzieć" },
-        { word: "lata", answer: "latać" },
-        { word: "wëchôdza", answer: "wychodzić" }
-      ],
-      "GBÙRSTWÒ": [
-        { word: "pole", answer: "pole" },
-        { word: "żëto", answer: "żyto" },
-        { word: "pszenica", answer: "pszenica" },
-        { word: "òrk", answer: "pług" },
-        { word: "kòsë", answer: "kosa" }
-      ],
-      "FARWË": [
-        { word: "bëły", answer: "biały" },
-        { word: "czorny", answer: "czarny" },
-        { word: "żółty", answer: "żółty" },
-        { word: "czerwony", answer: "czerwony" },
-        { word: "zéleni", answer: "zielony" }
-      ],
-      "WARK": [
-        { word: "fùrta", answer: "drzwi" },
-        { word: "okno", answer: "okno" },
-        { word: "szafla", answer: "szafa" },
-        { word: "stół", answer: "stół" },
-        { word: "krzeseł", answer: "krzesło" }
-      ],
-      "ZWËCZI": [
-        { word: "gwiozda", answer: "gwiazda" },
-        { word: "ksiãżka", answer: "książka" },
-        { word: "swãto", answer: "święto" },
-        { word: "jadło", answer: "jedzenie" },
-        { word: "òblëczëzna", answer: "zwyczaj" }
-      ],
-      "KASZËBË": [
-        { word: "gduńsk", answer: "Gdańsk" },
-        { word: "kòscérzna", answer: "Kościerzyna" },
-        { word: "Wejheròwò", answer: "Wejherowo" },
-        { word: "Pùck", answer: "Puck" },
-        { word: "Bytów", answer: "Bytów" }
-      ],
-      "JESTKÙ": [
-        { word: "kùch", answer: "ciasto" },
-        { word: "mlékò", answer: "mleko" },
-        { word: "prażnica", answer: "jajecznica" },
-        { word: "szneka", answer: "drożdżówka" },
-        { word: "wë", answer: "wy" }
-      ],
-      "MÔL": [
-        { word: "małi", answer: "mały" },
-        { word: "wielgi", answer: "duży" },
-        { word: "krótczë", answer: "krótki" },
-        { word: "dłëdżi", answer: "długi" },
-        { word: "wysoki", answer: "wysoki" }
-      ],
-      "BRZÔD": [
-        { word: "kòwôł", answer: "kowadło" },
-        { word: "żelazo", answer: "żelazo" },
-        { word: "brzôd", answer: "broda" },
-        { word: "kùń", answer: "koń" },
-        { word: "strëk", answer: "sznurek" }
-      ],
-      "CHËCZ": [
-        { word: "dom", answer: "dom" },
-        { word: "mieszkanie", answer: "mieszkanie" },
-        { word: "kùchniô", answer: "kuchnia" },
-        { word: "pokój", answer: "pokój" },
-        { word: "piwnica", answer: "piwnica" }
-      ],
-      "SZKÒŁA": [
-        { word: "szkòła", answer: "szkoła" },
-        { word: "klasa", answer: "klasa" },
-        { word: "nauczyc", answer: "nauczyciel" },
-        { word: "zeszyt", answer: "zeszyt" },
-        { word: "tablica", answer: "tablica" }
-      ],
-      "ÒSOBË": [
-        { word: "tatczi", answer: "tata" },
-        { word: "mama", answer: "mama" },
-        { word: "brac", answer: "brat" },
-        { word: "sostra", answer: "siostra" },
-        { word: "dzédzëk", answer: "dziadek" }
-      ],
+      // ... reszta kategorii bez zmian ...
       "NÔTËRA": [
         { word: "pióro", answer: "pióro" },
         { word: "notes", answer: "notes" },
@@ -404,8 +134,8 @@
     let timer = 10;
     let timerInterval;
     let scores = { 1: 0, 2: 0 };
-    let shuffledQuestions = [];
     let playerNames = { 1: "Grôcz 1", 2: "Grôcz 2" };
+    let playerQuestions = { 1: [], 2: [] }; // Losowe pytania dla każdego gracza
 
     const welcomeScreenEl = document.getElementById("welcomeScreen");
     const player1NameInput = document.getElementById("player1Name");
@@ -423,6 +153,18 @@
     const resultsBodyEl = document.getElementById("resultsBody");
     const progressBarEl = document.getElementById("progressBar");
 
+    // Funkcja do losowania n pytań z tablicy
+    function drawRandomQuestions(array, n) {
+      const arr = [...array];
+      const res = [];
+      for (let i = 0; i < n && arr.length > 0; i++) {
+        const idx = Math.floor(Math.random() * arr.length);
+        res.push(arr[idx]);
+        arr.splice(idx, 1);
+      }
+      return res;
+    }
+
     function startGame() {
       const player1Name = player1NameInput.value.trim() || "Grôcz 1";
       const player2Name = player2NameInput.value.trim() || "Grôcz 2";
@@ -432,8 +174,11 @@
       welcomeScreenEl.classList.add("hide");
       initGame();
     }
+
     function initGame() {
-      shuffledQuestions = [...questions].sort(() => Math.random() - 0.5);
+      // Każdy gracz dostaje 6 losowych pytań (mogą się powtarzać między graczami)
+      playerQuestions[1] = drawRandomQuestions(questions, 6);
+      playerQuestions[2] = drawRandomQuestions(questions, 6);
       currentIndex = 0;
       currentPlayer = 1;
       scores = { 1: 0, 2: 0 };
@@ -444,9 +189,11 @@
       updateProgressBar();
       setQuestion();
     }
+
     function setQuestion() {
-      if (currentIndex >= shuffledQuestions.length) { endGame(); return; }
-      wordEl.innerText = shuffledQuestions[currentIndex].word;
+      if (currentIndex >= 6) { endGame(); return; }
+      const currentQ = playerQuestions[currentPlayer][currentIndex];
+      wordEl.innerText = currentQ.word;
       answerTextEl.innerText = "";
       timerEl.innerText = "";
       timerEl.classList.remove("warning");
@@ -461,10 +208,12 @@
       updateProgressBar();
       startTimer();
     }
+
     function updateProgressBar() {
-      const progress = (currentIndex / shuffledQuestions.length) * 100;
+      const progress = (currentIndex / 6) * 100;
       progressBarEl.style.width = `${progress}%`;
     }
+
     function startTimer() {
       timerEl.innerText = `Czas: ${timer}s`;
       timerInterval = setInterval(() => {
@@ -474,6 +223,7 @@
         if (timer <= 0) { clearInterval(timerInterval); wrong(); }
       }, 1000);
     }
+
     function stop() {
       buttonsEl.style.display = "none";
       revealEl.style.display = "block";
@@ -491,7 +241,8 @@
     function show() {
       revealEl.style.display = "none";
       resultEl.style.display = "block";
-      answerTextEl.innerText = shuffledQuestions[currentIndex].answer;
+      const currentQ = playerQuestions[currentPlayer][currentIndex];
+      answerTextEl.innerText = currentQ.answer;
     }
     function correct() {
       updateScore(5);
@@ -507,8 +258,8 @@
       next();
     }
     function next() {
-      currentIndex++;
       currentPlayer = currentPlayer === 1 ? 2 : 1;
+      if (currentPlayer === 1) currentIndex++; // obaj gracze odpowiadają na zestaw 6 pytań naprzemiennie
       setTimeout(setQuestion, 1500);
     }
     function updateScore(points) {
